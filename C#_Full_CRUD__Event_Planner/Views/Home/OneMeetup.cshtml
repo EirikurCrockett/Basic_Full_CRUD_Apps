@@ -1,0 +1,43 @@
+<div class="w-75 my-0 mx-auto d-flex justify-content-between">
+    <div class="col">
+        <div class="d-flex flex-row justify-content-between">
+            <h3>@ViewBag.Event.Title</h3>
+            @if(ViewBag.UserId == ViewBag.Event.Coordinater.UserId)
+            {
+                <a href="meetups/@ViewBag.Event.EventId/delete" class="btn btn-danger">Delete</a>
+            }
+            else{
+                bool found = false;
+                foreach(Participant part in ViewBag.Event.Participants)
+                {
+                    if(part.UserId == ViewBag.UserId)
+                    {
+                        found = true;
+                    }
+                }
+                if(found){
+                    <a href="@ViewBag.Event.EventId/leave" class="btn btn-danger">Leave</a>
+                }
+                else
+                {
+                    @model Participant
+                    <form asp-action="JoinMeetup">
+                        <input asp-for="UserId" value="@ViewBag.UserId" hidden>
+                        <input asp-for="EventId" value="@ViewBag.Event.EventId" hidden>
+                        <input type="submit" value="Join" class="btn btn-success">
+                    </form>
+                }
+            }
+        </div>
+        
+        <p>Event Coordinator: @ViewBag.Event.Coordinater.Name</p>
+        <p>Description:<br> @ViewBag.Event.Description</p>
+        <ul>
+            <p>Participants:</p>
+            @foreach(Participant part in ViewBag.Event.Participants)
+            {
+                <li>@part.Attendee.Name</li>
+            }
+        </ul>
+    </div>
+</div>

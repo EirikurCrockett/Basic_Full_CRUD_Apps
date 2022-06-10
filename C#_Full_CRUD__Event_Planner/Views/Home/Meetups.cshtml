@@ -1,0 +1,64 @@
+@{
+    ViewData["Title"] = "Meetups";
+}
+
+<div class="w-75 my-0 mx-auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Meet Up</th>
+                <th scope="col">Date and Time</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Event Coordinator</th>
+                <th scope="col">No. of Participants</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Event meet in ViewBag.Events)
+            {
+                <tr>
+                    <th scope="row"><a href="meetups/@meet.EventId">@meet.Title</a></th>
+                    <td>@meet.EventDT</td>
+                    <td>@meet.Duration @meet.DurationType</td>
+                    <td>@meet.Coordinater.Name</td>
+                    <td>@meet.Participants.Count</td>
+                        @if(ViewBag.UserId == meet.Coordinater.UserId)
+                        {
+                            <td>
+                                <a href="meetups/@meet.EventId/delete">Delete</a>
+                            </td>
+                        }
+                        else{
+                            bool found = false;
+                            foreach(Participant part in meet.Participants)
+                            {
+                                if(part.UserId == ViewBag.UserId)
+                                {
+                                    found = true;
+                                }
+                            }
+                            if(found){
+                                <td>
+                                    <a href="meetups/@meet.EventId/leave">Leave</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @model Participant
+                                    <form asp-action="JoinMeetup" asp-controller="Home" method="post">
+                                        <input asp-for="UserId" value="@ViewBag.UserId" hidden>
+                                        <input asp-for="EventId" value="@meet.EventId" hidden>
+                                        <input type="submit" value="Join" class="btn btn-link">
+                                    </form>
+                                </td>
+                            }
+                        }
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a href="meetups/new" class="btn btn-primary">Add Meet Up</a>
+</div>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Show</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body>
+    <div class="header">
+        <h1>Add a new Show</h1>
+        <div>
+            <a href="/dashboard"><button class="button">TV Shows</button></a>
+            <a href="/logout"><button class="button">Logout</button></a>
+        </div>
+    </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="header flash">
+                {% for message in messages %}
+                    <h3>{{message}}</h3>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <form action="/show/new/send" method="post" class="form">
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" name="title">
+            </div>
+
+            <div>
+                <label for="network">Network:</label>
+                <input type="text" name="network">
+            </div>
+
+            <div>
+                <label for="release_date">Release Date:</label>
+                <input type="date" name="release_date">
+            </div>
+
+            <div>
+                <label for="description">description</label>
+                <textarea name="description" id="description" maxlength="500" cols="30" rows="10"></textarea>
+            </div>
+            <input type="submit" value="Add" class="button">
+        </form>
+    </div>
+    
+</body>
+</html>

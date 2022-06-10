@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    </head>
+    <body>
+        <div class="header">
+            <h1>{{user_name}}</h1>
+            <a href="/logout"><button class="button">Logout</button></a>
+        </div>
+        
+        <div class="container column">
+            {% if shows|length > 0 %}
+                <table class="table">
+                    <tr>
+                        <th>Title</th>
+                        <th>Network</th>
+                        <th>Release Date</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for show in shows %}
+                        <tr>
+                            <td>{{show['title']}}</td>
+                            <td>{{show['network']}}</td>
+                            <td>{{show['release_date']}}</td>
+                            <td>
+                                <div class="table-actions"></div>
+                                    <a href="/show//{{show['id']}}">Show</a>
+                                    <a href="/show/edit/{{show['id']}}">Edit</a>
+                                    <a href="/show/delete/{{show['id']}}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+            <a href="/show/new"><button class="button align-right">Add a New Show</button></a>
+        </div>
+    </body>
+</html>
